@@ -33,7 +33,7 @@
                                         <td>{{ $binhluan->user->ten_user }}</td>
                                         <td>{{ $binhluan->sach_id }}</td>
                                         <td>{{ $binhluan->bl_noidung }}</td>
-                                        <td>{{ $binhluan->status == 1 ? 'Hiện' : 'Ẩn' }}</td>
+                                        <td>{{ $binhluan->status == 1 ? 'đang hiện thị' : 'đang ẩn' }}</td>
                                         <td>
                                             <button type="button"
                                                 class="btn btn-outline-success block d-flex align-items-center"
