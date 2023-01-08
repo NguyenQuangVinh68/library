@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Binhluan;
 use Illuminate\Http\Request;
 
 class BinhluanController extends Controller
@@ -12,52 +13,16 @@ class BinhluanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $search = $request->input('key');
+        if ($search != "") {
+            $kq = Binhluan::orderBy('id', 'DESC')->search()->paginate(10);
+            $kq->appends(['key' => $search]);
+        } else {
+            $kq = Binhluan::orderBy('id', 'DESC')->paginate(10);
+        }
+        return view('pages.admin.binhluan.index', compact('kq'));
     }
 
     /**
@@ -69,17 +34,10 @@ class BinhluanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        $binhluan = Binhluan::find($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $binhluan->status = $request->status;
+        $binhluan->save();
+        return redirect()->route('binh-luan.index')->with('message', 'thay đổi trạng thái thành công');
     }
 }

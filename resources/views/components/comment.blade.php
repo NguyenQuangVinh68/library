@@ -23,9 +23,9 @@
     {{-- end form comment --}}
 
     {{-- hiện thị comment --}}
-   
+
     <section class="w-100 p-4 " style="border-radius: .5rem .5rem 0 0;" id="list-comment">
-        @if (count($sach->binhluan) > 0)
+        @if (count($sach->count_binhluan) > 0)
             @include('inc.client-list-comment', [
                 'comments' => $sach->binhluan,
                 'totalComment' => count($sach->count_binhluan),

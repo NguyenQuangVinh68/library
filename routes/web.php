@@ -72,7 +72,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     })->name('dashboard');
     Route::resource("danh-muc", DanhmucController::class)->except(['show']);
     Route::resource("khoa", KhoaController::class)->except(['show']);
-    Route::resource("binh-luan", KhoaController::class)->except(['show']);
+    Route::resource("binh-luan", BinhluanController::class)->only(['index', 'update']);
     Route::resource("nganh", NganhController::class)->except(['show']);
     Route::resource("vitri", VitriController::class)->except(['show']);
     Route::resource("user", UserController::class)->except(['show']);

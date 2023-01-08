@@ -27,11 +27,14 @@ class Sach extends Model
 
     public function binhluan()
     {
-        return $this->hasMany(Binhluan::class, 'sach_id', 'id')->where('traloi_id', 0)->orderBy('id', 'DESC');
+        return $this->hasMany(Binhluan::class, 'sach_id', 'id')
+            ->where('status', 1)
+            ->where('traloi_id', 0)
+            ->orderBy('id', 'DESC');
     }
     public function count_binhluan()
     {
-        return $this->hasMany(Binhluan::class, 'sach_id', 'id');
+        return $this->hasMany(Binhluan::class, 'sach_id', 'id')->where('status', 1);
     }
 
     /**

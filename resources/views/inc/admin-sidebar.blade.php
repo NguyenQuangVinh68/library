@@ -99,7 +99,7 @@
                 </li>
                 {{-- bình luận --}}
                 <li class="sidebar-item ">
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('binh-luan.index') }}" class="sidebar-link">
                         <i class="bi bi-chat-dots"></i>
                         <span>Bình luận</span>
                     </a>

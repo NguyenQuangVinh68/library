@@ -72,7 +72,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="{{ asset('assets/js/jquery.rateyo.min.js') }}"></script>
     @stack('slick')
-    @stack('custom-scripts')
+    @stack('ajax')
 
     <script>
         $(document).ready(function() {

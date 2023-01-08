@@ -107,8 +107,8 @@ class SachClientController extends Controller
             ];
 
             if ($binhluan = Binhluan::create($data)) {
-                $comments = Binhluan::where(['traloi_id' => 0, 'sach_id' => $sach_id])->orderBy('id', 'DESC')->get();
-                $totalComment = Binhluan::where('sach_id', $sach_id)->count();
+                $comments = Binhluan::where(['traloi_id' => 0, 'sach_id' => $sach_id, 'status' => 1])->orderBy('id', 'DESC')->get();
+                $totalComment = Binhluan::where('sach_id', $sach_id)->where('status', 1)->count();
                 // return response()->json(['comment' => $comments]);
                 return view('inc.client-list-comment', compact('comments', 'totalComment'));
             }
