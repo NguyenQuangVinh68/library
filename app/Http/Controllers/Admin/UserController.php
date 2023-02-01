@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Imports\UsersImport;
 
 
 use App\Models\User;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -103,8 +104,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, User $user)
     {
-        //
+        $user->delete($request->all());
+        return redirect()->route('user.index')->with('message', 'Xóa người dùng thành công');
+    }
+
+    public function import(Request $request)
+    {
+        // dd($request->file('import'));
+        Excel::import(new UsersImport, $request->file('import'));
+        return redirect()->back()->with('success', 'Data Imported Successfully');
     }
 }

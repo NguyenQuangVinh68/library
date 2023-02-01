@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-content">
                 <div class="card-header">
-                    <h4 class="text-center">Trả sách</h4>
+                    <h4 class="text-center">Tìm sinh viên</h4>
                 </div>
                 <div class="card-body">
                     <form class="form form-vertical" action="{{ route('tra.store') }}" method="POST">

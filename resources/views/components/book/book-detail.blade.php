@@ -5,14 +5,19 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-lg-2  col-4">
-                    <img src="{{ asset('assets/images/books/' . $sach->anhbia) }}" alt="book" class="w-100">
+                <div class="col-sm-2 col-md-3 col-lg-2 col-12">
+                    <img src="{{ asset('assets/images/books/' . $sach->anhbia) }}" alt="book" class="w-100 ">
 
                 </div>
-                <div class="col-lg-10 col-8">
+                <div class="col-sm-10 col-md-9 col-lg-10 col-12">
                     <p class="card-title fw-bold">Tác giả: <span class="text-capitalize"
                             style="font-weight:100">{{ $sach->tacgia }}</span></p>
-                    <p id="rateYo"></p>
+                    {{-- rating --}}
+                    <div class="d-flex gap-2">
+                        <div id="rateYo"></div>
+                        <div class="fw-bold"><span id="display-ave-rating">{{ $rate }}</span><span>/5</span> </div>
+                    </div>
+                    {{-- end reating --}}
                     <p class="card-title fw-bold">Thông tin suất bản: <span class="text-capitalize"
                             style="font-weight:100">{{ $sach->thongtinxb }}</span>
                     </p>
@@ -45,12 +50,14 @@
                                 class="bi bi-heart-fill {{ isset($user) ? ($yeuthich ? 'text-danger' : 'text-white') : 'text-white' }} "></i>
                         </span>
                     </p>
-                    @if ($sach->file_pdf != null)
-                        <a class=" btn btn-info mb-2 text-bottom" href="{{ route('sach.taive', $sach->id) }}"><i
-                                class="bi bi-download"></i>&ensp;Tải sách <span>(25,6Mb)</span> </a>
+                    @if (isset($size))
+                        <a class=" btn btn-info mb-2 text-bottom col-12 col-md-5 col-lg-4"
+                            href="{{ route('sach.taive', $sach->id) }}"><i class="bi bi-download"></i>&ensp;Tải sách
+                            <span>({{ $size }})</span> </a>
                     @endif
-                    <button class="mb-2 btn btn-primary btn-muonsach" data-id_sach="{{ $sach->id }}"
-                        {{ $sach->soluong <= 0 ? 'disabled' : 'ok' }}>Đăng kí mượn
+
+                    <button class="mb-2 btn btn-primary btn-muonsach col-12 col-md-5 col-lg-3"
+                        data-id_sach="{{ $sach->id }}" {{ $sach->soluong <= 0 ? 'disabled' : 'ok' }}>Đăng kí mượn
                         sách</button>
 
                 </div>

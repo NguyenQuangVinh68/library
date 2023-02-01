@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     // public $timestamps = false;
     use HasApiTokens, HasFactory, Notifiable;
-
+    public $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +23,7 @@ class User extends Authenticatable
         'ten_user',
         'email',
         'password',
+        'role'
     ];
 
     /**

@@ -8,14 +8,18 @@ class BookDetail extends Component
 {
 
     public $sach;
+    public $size;
+    public $rate;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($sach)
+    public function __construct($sach, $size = null, $rate)
     {
         $this->sach = $sach;
+        $this->size = $size;
+        $this->rate = $rate;
     }
 
     /**

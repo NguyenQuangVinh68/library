@@ -66,13 +66,13 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    {{-- @if (!isset($user)) --}}
                                     <div class="col-12">
                                         <div class="form-group ">
                                             <label>Password</label>
                                             <input required type="password" id="password"
                                                 class="form-control @error('password') is-invalid @enderror" name="password"
-                                                placeholder="Nhập password"
-                                                value="{{ isset($user) ? $user->password : '' }}">
+                                                placeholder="Nhập password">
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -80,6 +80,7 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    {{-- @endif --}}
                                     <div class="col-12">
                                         <div class="form-group ">
                                             <label>Vai trò</label>

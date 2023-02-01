@@ -10,14 +10,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Binhluan;
-use App\Models\Ctmuon;
 use App\Models\Sach;
 use App\Models\Nganh;
 use App\Models\Danhmuc;
 use App\Models\User;
 use App\Models\Yeuthich;
 use App\Models\MuonOnline;
-use Facade\FlareClient\Stacktrace\File;
+use Illuminate\Support\Facades\File;
 
 class SachClientController extends Controller
 {
@@ -58,7 +57,29 @@ class SachClientController extends Controller
     public function detail($sach_id)
     {
         $sach = Sach::find($sach_id);
-        return view('pages.client.chitietsach', compact('sach'));
+        $sumPoint = 0;
+        $danhgias = DB::table('danhgia')
+            ->select('point')
+            ->where('sach_id', $sach_id)
+            ->get();
+        // dd($danhgias);
+        if ($danhgias->isNotEmpty()) {
+            foreach ($danhgias as $danhgia) {
+                $sumPoint += $danhgia->point;
+            }
+            $aveRate =  $sumPoint / count($danhgias);
+        } else {
+            $aveRate = 0;
+        }
+
+
+        if ($sach->file_pdf != null) {
+            $size = "";
+            $file = public_path('assets/tailieu/' . $sach->file_pdf);
+            $size = $this->getFormattedFileSize(File::size($file));
+            return view('pages.client.chitietsach', compact('sach', 'size', 'aveRate'));
+        }
+        return view('pages.client.chitietsach', compact('sach', 'aveRate'));
     }
 
     public function yeuthich(Request $request)
@@ -220,5 +241,67 @@ class SachClientController extends Controller
         $sach = Sach::find($sach_id);
         $path = public_path('assets/tailieu/' . $sach->file_pdf);
         return response()->download($path);
+    }
+
+    public function danhgia(Request $request,  $sach_id)
+    {
+
+        if ($request->ajax()) {
+            $sumPoint = 0;
+            $flag = false;
+            $user_id = Auth::id();
+            $user_rating = DB::table('danhgia')->where('user_id', $user_id)->exists();
+
+            // check chùng user
+            if ($user_rating) {
+                // update lai so diem ma user danh gia truoc do
+                $flag =  DB::table('danhgia')
+                    ->where('sach_id', $sach_id)
+                    ->where('user_id', $user_id)
+                    ->update(['point' => $request->point]);
+            } else {
+                // them moi danh gia
+                $flag =  DB::insert('insert into danhgia (sach_id, user_id, point) values (?,?,?)', [$sach_id, $user_id, $request->point]);
+            }
+
+            // check lại điểm trung bình
+            $danhgias = DB::table('danhgia')
+                ->select('point')
+                ->where('sach_id', $sach_id)
+                ->get();
+            // dd($danhgias);
+            if ($danhgias->isNotEmpty()) {
+                foreach ($danhgias as $danhgia) {
+                    $sumPoint += $danhgia->point;
+                }
+                $aveRate =  round($sumPoint / count($danhgias), 2);
+            } else {
+                $aveRate = 0;
+            }
+
+
+
+            if ($flag == false) {
+                return response()->json(['error' => 'đánh giá thất bại']);
+            } else {
+                return response()->json(['success' => 'đánh giá thành công', 'aveRate' => $aveRate]);
+            }
+        }
+    }
+
+    private function getFormattedFileSize($size)
+    {
+        switch (true) {
+            case ($size / 1024 < 1):
+                return $size . 'B';
+            case ($size / pow(1024, 2) < 1):
+                return round($size / 1024, 2) . 'KB';
+            case ($size / pow(1024, 3) < 1):
+                return round($size / pow(1024, 2), 2) . 'MB';
+            case ($size / pow(1024, 4) < 1):
+                return round($size / pow(1024, 3), 2) . 'GB';
+            case ($size / pow(1024, 5) < 1):
+                return round($size / pow(1024, 4), 2) . 'TB';
+        }
     }
 }

@@ -44,7 +44,7 @@
             <ul class="menu">
                 {{-- dashboard --}}
                 <li class="sidebar-item {{ request()->is('admin') ? 'active' : '' }} ">
-                    <a href="#" class="sidebar-link">
+                    <a href="{{ route('dashboard') }}" class="sidebar-link">
                         <i class="bi bi-speedometer"></i>
                         <span>Bảng điều khiển</span>
                     </a>
@@ -115,7 +115,7 @@
                             <a href="{{ route('muon') }}">Mượn sách</a>
                         </li>
                         <li class="submenu-item {{ request()->is('admin/hoat-dong/tra*') ? 'active' : '' }}">
-                            <a href="{{ route('tra.create') }}">Trả sách hoặc Báo mất</a>
+                            <a href="{{ route('tra.create') }}">Trả sách, báo mất hoặc gia hạn</a>
                         </li>
                         <li class="submenu-item {{ request()->is('admin/hoat-dong/online*') ? 'active' : '' }}">
                             <a href="{{ route('muon.online') }}">Xác nhận mượn online</a>

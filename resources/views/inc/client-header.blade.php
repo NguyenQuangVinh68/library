@@ -18,8 +18,8 @@
             <div class="row">
                 <div class="col-lg-3 col-12 ">
                     <div class="logo" style="">
-                        <a href="#"><img src="{{ asset('assets/images/logo/logo_itc.png') }}" alt="Logo"
-                                style="width:70px; height:70px; border-radius:100rem"></a>
+                        <a href="{{ route('home') }}"><img src="{{ asset('assets/images/logo/logo_itc.png') }}"
+                                alt="Logo" style="width:70px; height:70px; border-radius:100rem"></a>
                     </div>
                 </div>
                 <div class="col-lg-9 col-12 mt-4  d-flex justify-content-end ">

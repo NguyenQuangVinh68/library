@@ -29,10 +29,10 @@ class SachController extends Controller
         $message_404 = "Không tìm thấy dữ liệu";
 
         if ($search != "") {
-            $kq = Sach::orderBy("id", "DESC")->search()->paginate(1);
+            $kq = Sach::orderBy("id", "DESC")->search()->paginate(10);
             $kq->appends(['select_search' => $option_search, 'key' => $search]);
         } else {
-            $kq = Sach::orderBy("id", "DESC")->paginate(2);
+            $kq = Sach::orderBy("id", "DESC")->paginate(10);
         }
 
         if (count($kq) > 0) {

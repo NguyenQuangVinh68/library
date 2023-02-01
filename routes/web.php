@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MuonOnlineController;
 use App\Http\Controllers\Admin\ThongkeController;
 use App\Http\Controllers\Admin\BinhluanController;
+use App\Http\Controllers\Admin\DashboardController;
 
 // client
 use App\Http\Controllers\Client\IndexController;
@@ -22,7 +23,7 @@ use App\Http\Controllers\Client\SachClientController;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,7 @@ Route::post('yeuthich', [SachClientController::class, 'yeuthich'])->name('sach.y
 Route::get('sach-dang-muon', [SachClientController::class, 'dangmuon'])->name('sach.dangmuon');
 Route::get('danh-sach-yeu-thich', [SachClientController::class, 'danhsachyeuthich'])->name('sach.danhsachyeuthich');
 Route::get('taive/{sach_id}', [SachClientController::class, 'taive'])->name('sach.taive');
+Route::post('danhgia/{sach_id}', [SachClientController::class, 'danhgia'])->name('sach.danhgia');
 
 
 Route::prefix('ajax')->group(function () {
@@ -67,18 +69,26 @@ Route::prefix('ajax')->group(function () {
 });
 
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('', function () {
-        return view("pages.admin.dashboard");
-    })->name('dashboard');
+    Route::get('', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource("danh-muc", DanhmucController::class)->except(['show']);
     Route::resource("khoa", KhoaController::class)->except(['show']);
     Route::resource("binh-luan", BinhluanController::class)->only(['index', 'update']);
     Route::resource("nganh", NganhController::class)->except(['show']);
     Route::resource("vitri", VitriController::class)->except(['show']);
-    Route::resource("user", UserController::class)->except(['show']);
+
+    // user
+    Route::prefix('user')->group(function () {
+        Route::get('', [UserController::class, 'index'])->name('user.index');
+        Route::post('store', [UserController::class, 'store'])->name('user.store');
+        Route::get('create', [UserController::class, 'create'])->name('user.create');
+        Route::put('{user}', [UserController::class, 'update'])->name('user.update');
+        Route::delete('{user}', [UserController::class, 'destroy'])->name('user.destroy');
+        Route::get('{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+        Route::post('import', [UserController::class, 'import'])->name('user.import');
+    });
+    // end user
 
     // sách
-    // Route::resource("sach", SachController::class)->except(['show']);
     Route::prefix('sach')->group(function () {
         Route::get('', [SachController::class, 'index'])->name('sach.index');
         Route::post('store', [SachController::class, 'store'])->name('sach.store');
@@ -87,8 +97,9 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::delete('{sach}', [SachController::class, 'destroy'])->name('sach.destroy');
         Route::get('{sach}/edit', [SachController::class, 'edit'])->name('sach.edit');
         Route::post('loc', [SachController::class, 'loc_khoa_nganh'])->name('sach.loc');
-        Route::get('loc', [SachController::class, 'loc_khoa_nganh']);
     });
+    // end sách
+
     // hoạt động
     Route::group(['prefix' => 'hoat-dong'], function () {
         // mượn
@@ -98,13 +109,24 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::delete('muon/{masach?}', [MuonController::class, 'removeBookInSession'])->name('xoa-sach');
         Route::get('muon-action', [MuonController::class, 'muonAction'])->name('muon-action');
         // trả
-        Route::resource('tra', TraController::class);
-        Route::post('tra/action', [TraController::class, 'tra'])->name('tra-action');
-        Route::post('tra/mat', [TraController::class, 'mat'])->name('mat');
-        // muon online
+        Route::prefix('tra')->group(function () {
+            Route::get('', [TraController::class, 'index'])->name('tra.index');
+            Route::get('create', [TraController::class, 'create'])->name('tra.create');
+            Route::post('store', [TraController::class, 'store'])->name('tra.store');
+            Route::post('action', [TraController::class, 'tra'])->name('tra.action');
+        });
+        // mất
+        Route::post('mat', [TraController::class, 'mat'])->name('mat');
+        // gia hạn mượn
+        Route::prefix('giahan')->group(function () {
+            Route::get('{id}', [TraController::class, 'giahan'])->name('giahan.index');
+            Route::post('', [TraController::class, 'store_giahan'])->name('giahan.post');
+        });
+        // mượn online
         Route::get('online/muon', [MuonOnlineController::class, 'index'])->name('muon.online');
         Route::get('online/muon/xac-nhan/{id_dangki?}', [MuonOnlineController::class, 'xacnhan'])->name('muon.online.xacnhan');
     });
+    // end hoạt động
 
     // Thống kê
     Route::prefix('thongke')->group(function () {
@@ -115,9 +137,6 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
 });
 
 Route::get('test', function () {
-    $kq = App\Models\Sach::orderBy('id', 'DESC')
-        ->where('khoa', 'kế toán')
-        ->orWhere('nganh', 'kế toán')
-        ->get();
-    dd($kq);
+    $kq = App\Models\Matsach::get();
+    dd($kq->user->ten_user);
 });

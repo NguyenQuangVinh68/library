@@ -41,6 +41,9 @@
                                         <td>{{ $muon->ngaymuon }}</td>
                                         <td>{{ $muon->ngaytra }}</td>
                                         <td>
+                                            <a href="{{ route('giahan.index', $muon->id) }}"
+                                                class="btn btn-outline-success">Gia
+                                                hạn</a>
                                             <button type="button"
                                                 class="btn {{ $muon->ngaytra == date('Y-m-d') ? 'btn-outline-light' : 'btn-outline-primary' }} block"
                                                 data-bs-toggle="modal"
@@ -52,6 +55,7 @@
                                         </td>
                                     </tr>
 
+                                    {{-- trả sách --}}
                                     <div class="modal fade" id="tra{{ $muon->id }}" data-bs-backdrop="static"
                                         aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
@@ -65,7 +69,7 @@
                                                         aria-label="Close">X</button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('tra-action') }}" method="POST">
+                                                    <form action="{{ route('tra.action') }}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="mamuon" value="{{ $muon->id }}">
                                                         <input type="hidden" name="masach" value="{{ $muon->masach }}">
@@ -88,6 +92,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- end trả sách --}}
+
+                                    {{-- mất sách --}}
                                     <div class="modal " id="mat{{ $muon->id }}" data-bs-backdrop="static"
                                         aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
@@ -137,6 +144,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- end mất sách --}}
                                 @endforeach
                             </tbody>
                         </table>

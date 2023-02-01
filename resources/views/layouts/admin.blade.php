@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
+    @stack('css')
 
 </head>
 
@@ -45,7 +46,6 @@
 
     <script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/changTabData.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     @stack('ajax')
     <script type="text/javascript">

@@ -4,6 +4,8 @@
         <div class="col-md-6 mb-1">
             <a class="text-capitalize text-decoration-none fs-2 d-block fw-bold " href="{{ route('sach.index') }}">Sách</a>
             <a href="{{ route('sach.create') }}" class="btn btn-primary mt-3">Thêm sách</a>
+            {{-- import file --}}
+            
         </div>
         <div class="col-md-6 mb-1">
             <label for="" class="form-label">Tìm kiếm</label>

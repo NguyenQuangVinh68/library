@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Muonsach;
+use App\Models\Trasach;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -46,50 +49,29 @@ class TraController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    // gia hạn
+    public function giahan($id)
     {
-        //
+        return view('pages.admin.trasach.form_giahan', compact('id'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function store_giahan(Request $request)
     {
-        //
+        $request->validate([
+            'songay_giahan' => 'required|integer',
+        ]);
+        $muonsach = Muonsach::find($request->mamuon);
+        if ($muonsach) {
+            $ngay_tra_moi = Carbon::parse($muonsach->ngaytra)->addDay($request->songay_giahan)->format('Y-m-d');
+            $muonsach->update(['ngaytra' => $ngay_tra_moi]);
+            return redirect()->route('tra.create');
+        } else {
+            return redirect()->route('tra.create');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    // end gia hạn
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
     public function tra(Request $request)
     {

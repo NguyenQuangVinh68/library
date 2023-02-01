@@ -268,4 +268,9 @@ class MuonController extends Controller
         $sinhvien = User::find($id);
         return view('pages.admin.muonsach.form', compact('sinhvien'));
     }
+
+    public function giahan()
+    {
+        return view('pages.admin.muonsach.index');
+    }
 }

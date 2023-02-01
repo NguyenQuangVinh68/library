@@ -3,13 +3,18 @@
     <h3 class="thongbao p-5 text-center" style="display: none;"></h3>
     @if (isset($sach))
         <div class="container mt-5">
-            <x-book.book-detail :sach="$sach" />
+            @if (isset($size))
+                <x-book.book-detail :sach="$sach" :rate="$aveRate" :size="$size" />
+            @else
+                <x-book.book-detail :sach="$sach" :rate="$aveRate" />
+            @endif
         </div>
 
         {{-- comment --}}
         <div class="container">
             <x-comment :sach="$sach" />
         </div>
+
         {{-- end comment --}}
 
         {{-- script --}}
@@ -69,11 +74,47 @@
                 $("#rateYo").rateYo({
                     starWidth: "20px",
                     normalFill: "#A0A0A0",
-                    fullStar: false,
+                    halfStar: true,
                     rating: 5,
                     onSet: function(rating, rateYoInstance) {
-                        $("#rating").val(rating);
-                        alert(rating);
+                        if (id_user) {
+                            $("#rating").val(rating);
+                            const _ratingURL = '{{ route('sach.danhgia', $sach->id) }}'
+                            $.ajax({
+                                url: _ratingURL,
+                                type: 'POST',
+                                data: {
+                                    'point': rating,
+                                },
+                                success: function(response) {
+
+                                    if (response.error) {
+                                        $(".bg-thongbao-danhgia").removeClass('bg-success');
+                                        $(".icon-thongbao-danhgia").removeClass('bi-check-circle-fill');
+
+                                        $(".bg-thongbao-danhgia").addClass('bg-danger');
+                                        $(".icon-thongbao-danhgia").addClass('bi-x-circle-fill');
+                                        $(".text-content_thongbao").html(response.error)
+                                    } else {
+                                        $(".bg-thongbao-danhgia").removeClass('bg-danger');
+                                        $(".icon-thongbao-danhgia").removeClass('bi-x-circle-fill');
+
+                                        $(".icon-thongbao-danhgia").addClass('bi-check-circle-fill');
+                                        $(".bg-thongbao-danhgia").addClass('bg-success');
+                                        $(".text-content_thongbao").html(response.success)
+                                        $("span#display-ave-rating").html(response.aveRate)
+                                    }
+                                    $(".thongbao_danhgia").addClass('show');
+                                    $(".thongbao_danhgia").fadeIn();
+                                    setTimeout(() => {
+                                        $(".thongbao_danhgia").removeClass('show');
+                                        $(".thongbao_danhgia").fadeOut();
+                                    }, 1000);
+                                },
+                            })
+                        } else {
+                            window.location.href = "/login";
+                        }
                     }
                 });
 
@@ -191,4 +232,21 @@
             <h3 class="alert-danger p-3 text-center">Không có dữ liệu</h3>
         </div>
     @endif
+
+    <div class="modal  thongbao_danhgia " id="success" tabindex="-1" aria-labelledby="myModalLabel110"
+        style="display: none; background-color:rgba(1,1,1,0.5) ">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-body bg-thongbao-danhgia">
+                    <div class="text-center">
+                        <h5 class=" text-center m-0 text-capitalize text-content_thongbao"></h5>
+                        <i class="bi icon-thongbao-danhgia " style="font-size: 100px"></i>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 @endsection

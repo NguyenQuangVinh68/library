@@ -8201,18 +8201,18 @@ body.theme-dark .bi.bi-sub:before {
     vertical-align: sub;
 }
 body.theme-dark .stats-icon {
-    align-items: center;
-    background-color: #000;
-    border-radius: 0.5rem;
-    display: flex;
-    float: right;
-    height: 3rem;
-    justify-content: center;
     width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    background-color: #000;
+    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 body.theme-dark .stats-icon i {
     color: #fff;
-    font-size: 1.7rem;
+    /* font-size: 1.7rem; */
 }
 body.theme-dark .stats-icon.purple {
     background-color: #9694ff;
