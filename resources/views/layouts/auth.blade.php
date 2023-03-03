@@ -15,16 +15,72 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
+    <style>
+        .auth-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(12, 9, 101);
+            background: linear-gradient(99deg, rgba(12, 9, 101, 0.949544783733806) 6%, rgba(41, 89, 176, 0.9103290974592962) 47%, rgba(39, 88, 180, 0.6890405820531338) 100%);
+        }
+
+        .form-auth {
+            width: 400px;
+            margin: 0 auto;
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            background: #262424;
+        }
+
+        .form-auth h3 {
+            color: #fff !important;
+        }
+
+        .form-auth__group {
+            margin-bottom: 25px;
+        }
+
+        .form-auth__group a {
+            text-decoration: none;
+            font-weight: 400;
+            color: #c2c0d2 !important;
+        }
+
+        .form-auth__group input {
+            background: #262424 !important;
+            boder: 1px solid #c1bcbc !important;
+            color: #fff !important;
+        }
+
+        .form-auth__group input:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.1rem rgba(255, 255, 255, 0.803) !important;
+        }
+
+        .form-control {
+            color: #fff !important;
+        }
+
+        .form-label {
+            color: #fff !important;
+        }
+
+        @media (max-width: 376px) {
+            .form-auth {
+                width: 100%;
+                margin: 0 10px;
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <script src="{{ asset('assets/js/initTheme.js') }}"></script>
-
-    <main class="py-4">
+    <main>
         @yield('form')
     </main>
 

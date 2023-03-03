@@ -1,7 +1,44 @@
 @extends('layouts.auth')
 
 @section('form')
-    <div class="container">
+    <div class=" auth-container">
+        <form class="form-auth" action="{{ route('password.update') }}" method="POST">
+            @csrf
+            <h3 class="my-4 text-center">Reset Password</h3>
+            <div class="form-auth__group">
+                <label class="form-label">Email </label>
+                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                    value="{{ old('email') }}" placeholder="Nhập email" autocomplete="off">
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-auth__group">
+                <label class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
+                    autocomplete="current-password" placeholder="Nhập mật khẩu">
+                @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="form-auth__group">
+                <label class="form-label">{{ __('Confirm Password') }}</label>
+
+                <input type="password" class="form-control" name="password_confirmation" required
+                    autocomplete="new-password" placeholder="Confirm password">
+            </div>
+            <div class="form-auth__group">
+                <button type="submit" class="btn btn-primary w-100">Đặt lại Password</button>
+            </div>
+        </form>
+    </div>
+
+    {{-- <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -69,5 +106,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

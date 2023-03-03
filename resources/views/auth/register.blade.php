@@ -1,104 +1,58 @@
 @extends('layouts.auth')
 
 @section('form')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Register') }}</div>
-
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
-
-                            <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Mã user') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text"
-                                        class="form-control @error('ma_user') is-invalid @enderror" name="ma_user"
-                                        value="{{ old('ma_user') }}" required autofocus>
-
-                                    @error('ma_user')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="ten_user"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="ten_user" type="text"
-                                        class="form-control @error('ten_user') is-invalid @enderror" name="ten_user"
-                                        value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                    @error('ten_user')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email">
-
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="password"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="new-password">
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="password-confirm"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control"
-                                        name="password_confirmation" required autocomplete="new-password">
-                                </div>
-                            </div>
-
-                            <div class="row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Register') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    <div class=" auth-container">
+        <form class="form-auth" action="{{ route('register') }}" method="POST">
+            @csrf
+            <h3 class="my-4 text-center">Đăng Kí</h3>
+            <div class="form-auth__group">
+                <label class="form-label">Mã sinh viên</label>
+                <input type="text" class="form-control @error('ma_user') is-invalid @enderror" name="ma_user"
+                    value="{{ old('ma_user') }}" placeholder="Nhập mã sinh viên" autocomplete="off">
+                @error('ma_user')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
-        </div>
+            <div class="form-auth__group">
+                <label class="form-label">Tên sinh viên</label>
+                <input type="text" class="form-control @error('ten_user') is-invalid @enderror" name="ten_user"
+                    value="{{ old('ten_user') }}" placeholder="Nhập tên sinh viên" autocomplete="off">
+                @error('ten_user')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-auth__group">
+                <label class="form-label">Email </label>
+                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                    value="{{ old('email') }}" placeholder="Nhập email" autocomplete="off">
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="form-auth__group">
+                <label class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
+                    placeholder="Nhập mật khẩu">
+                @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="form-auth__group">
+                <button class="btn btn-primary w-100">Đăng kí</button>
+            </div>
+            <div class="form-auth__group">
+                <p class="text-center">Bạn đã có tài khoản?<a href="{{ route('login') }}" class="fw-bold"> Đăng nhập</a></p>
+            </div>
+        </form>
     </div>
 @endsection

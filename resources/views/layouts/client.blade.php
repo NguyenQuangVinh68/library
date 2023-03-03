@@ -22,6 +22,28 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
 
     <style>
+        .icon_theme {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 3rem;
+            width: 3rem;
+            position: fixed;
+            top: 50%;
+            right: 2px;
+            z-index: 50000;
+            font-size: 20px;
+            cursor: pointer;
+            background: #f953c6;
+            border-radius: 100vh;
+            padding: 10px;
+        }
+
+        .img_icon {
+            width: 100%;
+            z-index: 1000000;
+        }
+
         @media only screen and (max-width:769px) {
             .font-login {
                 font-size: 13px
@@ -30,16 +52,20 @@
     </style>
 </head>
 
-<body>
-    <script src="{{ asset('assets/js/initTheme.js') }}"></script>
+@php
+    $theme = \Cookie::get('theme');
+    if ($theme != 'theme-dark' && $theme != 'theme-light') {
+        $theme = 'theme-dark';
+        $icon_img = '/assets/images/icon/sun.png';
+    }
+@endphp
 
-    {{-- @if (session('thongbao'))
-        @php
-            echo '<script>
-                alert("'.$thongbao .'")
-            </script>';
-        @endphp
-    @endif --}}
+<body class="{{ $theme }}">
+
+    <div id="toggle-theme" class="icon_theme ">
+        <img src={{ isset($icon_img) ? $icon_img : ($theme == 'theme-dark' ? '/assets/images/icon/sun.png' : '/assets/images/icon/moon.png') }}
+            id="img_icon" class="img_icon " alt="">
+    </div>
 
     <div id="app" class="layout-horizontal">
 
@@ -66,7 +92,7 @@
 
     <script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/client.js') }}"></script>
     <script src="{{ asset('assets/js/horizontal-layout.js') }}"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
@@ -93,6 +119,35 @@
                 return false
             })
         })
+    </script>
+
+    <script>
+        // toggle theme
+        var toggle_icon = document.getElementById('toggle-theme')
+        var body = document.getElementsByTagName('body')[0];
+        var dark_theme_class = 'theme-dark';
+        var light_theme_class = 'theme-light';
+        toggle_icon.addEventListener('click', function() {
+            if (body.classList.contains(dark_theme_class)) {
+                body.classList.remove(dark_theme_class);
+                body.classList.add(light_theme_class);
+                document.images['img_icon'].src = '/assets/images/icon/moon.png';
+                setCookie('theme', 'theme-light');
+            } else {
+                body.classList.remove(light_theme_class);
+                body.classList.add(dark_theme_class);
+                document.images['img_icon'].src = '/assets/images/icon/sun.png';
+                setCookie('theme', 'theme-dark');
+            }
+        })
+
+        function setCookie(name, value) {
+            var d = new Date();
+            d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            var a = name + "=" + value + ";" + expires
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
     </script>
 </body>
 

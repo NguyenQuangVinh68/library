@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\DashboardController;
 // client
 use App\Http\Controllers\Client\IndexController;
 use App\Http\Controllers\Client\SachClientController;
+use App\Http\Controllers\Client\BangxephangController;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -38,17 +39,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Auth::routes();
 
-// Route::get('/home', function () {
-//     return redirect('/');
-// });
-
-// Route::get('login', [AuthController::class, 'index'])->name('login');
-// Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
-// Route::get('register', [AuthController::class, 'register'])->name('register');
-// Route::post('post-register', [AuthController::class, 'postRegister'])->name('register.post');
-// Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
-
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
@@ -61,6 +51,7 @@ Route::get('sach-dang-muon', [SachClientController::class, 'dangmuon'])->name('s
 Route::get('danh-sach-yeu-thich', [SachClientController::class, 'danhsachyeuthich'])->name('sach.danhsachyeuthich');
 Route::get('taive/{sach_id}', [SachClientController::class, 'taive'])->name('sach.taive');
 Route::post('danhgia/{sach_id}', [SachClientController::class, 'danhgia'])->name('sach.danhgia');
+Route::get('bangxephang', [BangxephangController::class, 'index'])->name('bangxephang');
 
 
 Route::prefix('ajax')->group(function () {
@@ -134,9 +125,4 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::post('loctheomuc', [ThongkeController::class, 'loctheomuc'])->name('thongke.loctheomuc');
         Route::post('tuychinh', [ThongkeController::class, 'tuychinh'])->name('thongke.tuychinh');
     });
-});
-
-Route::get('test', function () {
-    $kq = App\Models\Matsach::get();
-    dd($kq->user->ten_user);
 });

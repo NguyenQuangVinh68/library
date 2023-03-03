@@ -38,8 +38,13 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold text-capitalize">sách</h6>
-                                        <h6 class="font-extrabold mb-0">183.000</h6>
+                                        <h6 class="text-muted font-semibold text-capitalize">Tổng sách</h6>
+                                        <h6 class="font-extrabold mb-0">
+                                            @php
+                                                $tongsach = App\Models\Sach::count();
+                                            @endphp
+                                            {{ $tongsach <= 0 ? 0 : $tongsach }}
+                                        </h6>
                                     </div>
                                 </div>
                             </div>
@@ -55,8 +60,15 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold text-capitalize">lượt mượn</h6>
-                                        <h6 class="font-extrabold mb-0">80.000</h6>
+                                        <h6 class="text-muted font-semibold text-capitalize">số lượt mượn</h6>
+                                        <h6 class="font-extrabold mb-0">
+                                            @php
+                                                $sachmuon = Illuminate\Support\Facades\DB::table('chitietmuons')
+                                                    ->join('danhsachmuons', 'chitietmuons.mamuon', '=', 'danhsachmuons.id')
+                                                    ->count();
+                                            @endphp
+                                            {{ $sachmuon <= 0 ? 0 : $sachmuon }}
+                                        </h6>
                                     </div>
                                 </div>
                             </div>
@@ -72,8 +84,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Sách mất</h6>
-                                        <h6 class="font-extrabold mb-0">112</h6>
+                                        <h6 class="text-muted font-semibold">Tổng Sách mất</h6>
+                                        <h6 class="font-extrabold mb-0">
+                                            {{ empty($sach_mat) ? 0 : count($sach_mat) }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -170,36 +183,40 @@
                     <div class="card-header">
                         <h4 class="card-title">Danh sách mất</h4>
                     </div>
-                    <div class="card-content">
-                        <div class="card-body">
-                            <!-- Table with outer spacing -->
-                            <div class="table-responsive">
-                                <table class="table table-lg">
-                                    <thead>
-                                        <tr>
-                                            <th>Mã người dùng</th>
-                                            <th>Tên người dùng</th>
-                                            <th>Mã sách</th>
-                                            <th>Nhan đề sách</th>
-                                            <th>Ngày báo mất</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($sach_mat as $sach)
+                    @if (empty($sach_mat))
+                        <h3 class="alert-danger p-2">Không có dữ liệu</h3>
+                    @else
+                        <div class="card-content">
+                            <div class="card-body">
+                                <!-- Table with outer spacing -->
+                                <div class="table-responsive">
+                                    <table class="table table-lg">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $sach->ma_user }}</td>
-                                                <td>Chua co</td>
-                                                <td>{{ $sach->masach }}</td>
-                                                {{-- <td>{{ $sach->user->ten_user }}</td> --}}
-                                                <td>{{ $sach->nhande }}</td>
-                                                <td>{{ $sach->ngaybaomat }}</td>
+                                                <th>Mã người dùng</th>
+                                                <th>Tên người dùng</th>
+                                                <th>Mã sách</th>
+                                                <th>Nhan đề sách</th>
+                                                <th>Ngày báo mất</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($sach_mat as $sach)
+                                                <tr>
+                                                    <td>{{ $sach->ma_user }}</td>
+                                                    <td>{{ $sach->ten_user }}</td>
+                                                    <td>{{ $sach->masach }}</td>
+                                                    {{-- <td>{{ $sach->user->ten_user }}</td> --}}
+                                                    <td>{{ $sach->nhande }}</td>
+                                                    <td>{{ $sach->ngaybaomat }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
             {{-- end sách mất --}}

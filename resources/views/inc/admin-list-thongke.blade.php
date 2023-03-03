@@ -135,6 +135,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Mã sách</th>
+
                                                         <th>Mã sinh viên</th>
                                                         <th>Nhan đề</th>
                                                         <th>Khoa</th>
@@ -148,7 +149,6 @@
                                                         <tr>
                                                             <td>{{ $mat->id }}</td>
                                                             <td>{{ $mat->ma_user }}</td>
-                                                            <td class="text-capitalize">{{ $mat->user->ten_user }}</td>
                                                             <td>{{ $mat->nhande }}</td>
                                                             <td>{{ $mat->khoa }}</td>
                                                             <td>{{ $mat->nganh }}</td>

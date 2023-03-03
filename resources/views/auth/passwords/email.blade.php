@@ -1,7 +1,35 @@
 @extends('layouts.auth')
 
 @section('form')
-<div class="container">
+    <div class=" auth-container">
+        <form class="form-auth" action="{{ route('password.email') }}" method="POST">
+            @csrf
+            <h3 class="my-4 text-center">Reset Password</h3>
+
+            <div class="form-auth__group">
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="form-auth__group">
+                <label class="form-label">Email </label>
+                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                    placeholder="Nhập email" autocomplete="off">
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-auth__group">
+                <button type="submit" class="btn btn-primary w-100">Gửi liên kết đặt lại mật khẩu</button>
+            </div>
+        </form>
+    </div>
+    {{-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -43,5 +71,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 @endsection

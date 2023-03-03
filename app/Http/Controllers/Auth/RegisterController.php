@@ -55,10 +55,26 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'ma_user' => ['required', 'string', 'max:255'],
+            'ma_user' => ['required', 'integer', 'max:255', 'unique:users'],
             'ten_user' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
+        ], [
+            'ma_user.required' => 'Không được bỏ trống trường này',
+            'ma_user.unique' => 'Mã sinh viên đã tồn tại trong hệ thống',
+            'ma_user.integer' => 'Mã sinh viên phải là số',
+
+
+            'ten_user.required' => 'Không được bỏ trống trường này',
+
+            'email.required' => 'Không được bỏ trống trường này',
+            'email.unique' => 'Email đã tồn tại trong hệ thống',
+            'email.email' => 'Email không đúng định dạng',
+
+            'password.required' => 'Không được bỏ trống trường này',
+            'password.min' => 'Mật khẩu phải nhiều hơn 8 kí tự',
+
+
         ]);
     }
 
