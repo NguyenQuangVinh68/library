@@ -26,21 +26,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 3rem;
-            width: 3rem;
-            position: fixed;
-            top: 50%;
-            right: 2px;
-            z-index: 50000;
-            font-size: 20px;
+            height: 2.2rem;
+            width: 2.2rem;
             cursor: pointer;
-            background: #f953c6;
+            background: #435ebe;
             border-radius: 100vh;
-            padding: 10px;
         }
 
         .img_icon {
-            width: 100%;
+            width: 1rem;
+            heigh: 1rem;
             z-index: 1000000;
         }
 
@@ -62,10 +57,10 @@
 
 <body class="{{ $theme }}">
 
-    <div id="toggle-theme" class="icon_theme ">
+    {{-- <div id="toggle-theme" class="icon_theme ">
         <img src={{ isset($icon_img) ? $icon_img : ($theme == 'theme-dark' ? '/assets/images/icon/sun.png' : '/assets/images/icon/moon.png') }}
             id="img_icon" class="img_icon " alt="">
-    </div>
+    </div> --}}
 
     <div id="app" class="layout-horizontal">
 
