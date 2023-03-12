@@ -98,14 +98,14 @@
                     </a>
                 </li>
                 {{-- bình luận --}}
-                <li class="sidebar-item ">
+                <li class="sidebar-item {{ request()->is('admin/binh-luan*') ? 'active' : '' }}">
                     <a href="{{ route('binh-luan.index') }}" class="sidebar-link">
                         <i class="bi bi-chat-dots"></i>
                         <span>Bình luận</span>
                     </a>
                 </li>
                 {{-- hoạt động --}}
-                <li class="sidebar-item has-sub">
+                <li class="sidebar-item has-sub {{ request()->is('admin/hoat-dong*') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-journal-check"></i>
                         <span>Hoạt động</span>
@@ -115,7 +115,7 @@
                             <a href="{{ route('muon') }}">Mượn sách</a>
                         </li>
                         <li class="submenu-item {{ request()->is('admin/hoat-dong/tra*') ? 'active' : '' }}">
-                            <a href="{{ route('tra.create') }}">Trả sách, báo mất hoặc gia hạn</a>
+                            <a href="{{ route('tra.index') }}">Trả sách, báo mất hoặc gia hạn</a>
                         </li>
                         <li class="submenu-item {{ request()->is('admin/hoat-dong/online*') ? 'active' : '' }}">
                             <a href="{{ route('muon.online') }}">Xác nhận mượn online</a>
@@ -123,7 +123,7 @@
                     </ul>
                 </li>
                 {{-- thống kê --}}
-                <li class="sidebar-item ">
+                <li class="sidebar-item {{ request()->is('admin/thongke*') ? 'active' : '' }}">
                     <a href="{{ route('thongke.index') }}" class="sidebar-link">
                         <i class="bi bi-graph-up"></i>
                         <span>Thống kê</span>

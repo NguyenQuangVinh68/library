@@ -1,4 +1,4 @@
-@extends('pages.admin.muonsach.layout')
+{{-- @extends('pages.admin.muonsach.layout')
 @section('content')
     @if (session('message'))
         <div class="alert alert-danger mt-5">
@@ -36,4 +36,4 @@
             </div>
         </div>
     </div>
-@endsection
+@endsection --}}

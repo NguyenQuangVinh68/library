@@ -16,38 +16,35 @@ class TraController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.admin.trasach.index');
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('pages.admin.trasach.form');
-    }
+        $search = $request->txtsearch;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $data = $request->all();
-        $kq = $this->sqlBorrowing($data['ma_user']);
-
-        if ($kq != null) {
-            return view('pages.admin.trasach.index', compact('kq'));
+        if ($search != '') {
+            $kq = DB::table('danhsachmuons')
+                ->select('danhsachmuons.id', 'danhsachmuons.ma_user', 'danhsachmuons.ngaytra', 'danhsachmuons.ngaymuon', 'danhsachmuons.ten_user', 'chitietmuons.nhande', 'chitietmuons.trangthai', 'chitietmuons.masach')
+                ->join('chitietmuons', 'danhsachmuons.id', '=', 'chitietmuons.mamuon')
+                ->where([
+                    [function ($query) use ($search) {
+                        $query->where('chitietmuons.nhande', 'like', '%' . $search . '%')
+                            ->orWhere('danhsachmuons.ma_user', 'like', '%' . $search . '%');
+                    }],
+                    ['chitietmuons.trangthai', '=', '0']
+                ])
+                ->paginate(7);
+            $kq->appends(['q' => $search]);
         } else {
-            return redirect()->route('tra.create')->with('message', "Sinh viên hiện chưa mượn sách");
+            $kq = DB::table('danhsachmuons')
+                ->select('danhsachmuons.id', 'danhsachmuons.ma_user', 'danhsachmuons.ngaytra', 'danhsachmuons.ngaymuon', 'danhsachmuons.ten_user', 'chitietmuons.nhande', 'chitietmuons.trangthai', 'chitietmuons.masach')
+                ->join('chitietmuons', 'danhsachmuons.id', '=', 'chitietmuons.mamuon')
+                ->where('chitietmuons.trangthai', '=', '0')
+                ->paginate(7);
         }
+
+        return view('pages.admin.trasach.index', compact('kq'));
     }
+
 
     // gia hạn
     public function giahan($id)
@@ -116,13 +113,11 @@ class TraController extends Controller
      */
     private function sqlBorrowing($ma_user)
     {
-
-
         return DB::select("SELECT ds.id, ds.ma_user, ct.masach, ds.ngaytra, ds.ngaymuon, ds.ten_user, ct.nhande, ct.trangthai
                                 FROM danhsachmuons ds
                                 INNER JOIN chitietmuons ct 
                                 ON ds.id = ct.mamuon
-                                WHERE ds.ma_user = '$ma_user'
+                                WHERE ds.ma_user like '%$ma_user%'
                                 AND ct.trangthai = 0
                             ");
     }

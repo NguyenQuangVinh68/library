@@ -13,12 +13,25 @@
                 <p class="text-capitalize">{{ $message }}</p>
             </div>
         @endif
-
-        <div class="row my-5" id="table-head">
-            <div class="col-12">
-                <div class="table-responsive">
-                    @if (isset($kq))
-                        <h4 class="text-center mb-5">Sách đang mượn</h4>
+        <div class="container  d-flex justify-content-around align-items-center mb-5">
+            <h4 class="text-center ">Sách đang mượn</h4>
+            <form class="form form-vertical" action="">
+                <div class="row ">
+                    <div class="col-9 p-0">
+                        <input class="form-control" type="text" name="txtsearch" id="txtsearch"
+                            placeholder="Nhập mã sinh viên hoặc tên sách"
+                            value="{{ Request::get('txtsearch') ? Request::get('txtsearch') : '' }}">
+                    </div>
+                    <div class="col-3 p-0">
+                        <button class="btn btn-primary" type="submit">Tìm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        @if (count($kq) > 0)
+            <div class="row my-5" id="table-head">
+                <div class="col-12">
+                    <div class="table-responsive">
                         <table class="table mb-0">
                             <thead class="thead-dark">
                                 <tr>
@@ -118,10 +131,14 @@
                                                                 ->get();
                                                         @endphp
                                                         {{-- data --}}
-                                                        <input type="hidden" name="masach" value="{{ $muon->masach }}">
-                                                        <input type="hidden" name="nhande" value="{{ $muon->nhande }}">
-                                                        <input type="hidden" name="ma_user" value="{{ $muon->ma_user }}">
-                                                        <input type="hidden" name="mamuon" value="{{ $muon->id }}">
+                                                        <input type="hidden" name="masach"
+                                                            value="{{ $muon->masach }}">
+                                                        <input type="hidden" name="nhande"
+                                                            value="{{ $muon->nhande }}">
+                                                        <input type="hidden" name="ma_user"
+                                                            value="{{ $muon->ma_user }}">
+                                                        <input type="hidden" name="mamuon"
+                                                            value="{{ $muon->id }}">
                                                         <input type="hidden" name="maadm" value="admin">
                                                         <input type="hidden" name="ngaybaomat"
                                                             value="{{ date('Y-m-d') }}">
@@ -148,9 +165,40 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    @endif
+
+                        {{-- @push('ajax')
+                            <script>
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
+                                })
+
+                                var ma_uer = $('#ma_user').val()
+
+                                $('#btn-timsv').click(function(ev) {
+                                    ev.preventDefault();
+                                    $.ajax({
+                                        url: '{{ route('ajax.muonsach') }}',
+                                        type: 'POST',
+                                        data:{ma_uer},
+                                        success: function(){
+
+                                        }
+                                    })
+                                })
+                            </script>
+                        @endpush --}}
+                    </div>
                 </div>
             </div>
-        </div>
+            @if (isset($kq))
+                {{ $kq->links('inc.pagination') }}
+            @endif
+        @else
+            <div class="">
+                <h3 class="p-5 alert-danger fs-3 fw-bold text-center">Không có dữ liệu</h3>
+            </div>
+        @endif
     </section>
 @endsection
