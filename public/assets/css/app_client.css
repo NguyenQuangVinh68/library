@@ -18422,13 +18422,16 @@ a {
 }
 
 /* responsive */
-@media only screen and (max-width: 428px) {
+@media only screen and (max-width: 430px) {
     #title_search {
         font-size: 20px !important;
         text-align: center;
     }
     .slider img {
-        height: 300px !important;
+        height: 320px !important;
+        width: 250px !important;
+        margin: 0 auto !important;
+        text-align: center;
     }
 
     .search-main__header {
@@ -18505,5 +18508,3 @@ a {
 .small {
     font-size: 0.875em;
 }
-
-

@@ -1,5 +1,6 @@
 @extends('pages.admin.muonsach.layout')
 @section('content')
+    @inject('carbon', 'Carbon\Carbon')
     <section class="section">
 
         @if (session('message'))
@@ -46,7 +47,8 @@
                             </thead>
                             <tbody>
                                 @foreach ($kq as $muon)
-                                    <tr class="{{ $muon->ngaytra == date('Y-m-d') ? 'bg-danger' : '' }}">
+                                    <tr
+                                        class="{{ strtotime($muon->ngaytra) < strtotime(date('Y-m-d')) ? 'bg-danger text-white' : '' }}">
                                         <td>{{ $muon->ma_user }}</td>
                                         <td class="text-capitalize">{{ $muon->ten_user }}</td>
                                         <td>{{ $muon->masach }}</td>
@@ -55,14 +57,14 @@
                                         <td>{{ $muon->ngaytra }}</td>
                                         <td>
                                             <a href="{{ route('giahan.index', $muon->id) }}"
-                                                class="btn btn-outline-success">Gia
+                                                class="btn {{ strtotime($muon->ngaytra) < strtotime(date('Y-m-d')) ? 'btn-outline-light' : 'btn-outline-success' }}">Gia
                                                 hạn</a>
                                             <button type="button"
-                                                class="btn {{ $muon->ngaytra == date('Y-m-d') ? 'btn-outline-light' : 'btn-outline-primary' }} block"
+                                                class="btn {{ strtotime($muon->ngaytra) < strtotime(date('Y-m-d')) ? 'btn-outline-light' : 'btn-outline-primary' }} block"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#tra{{ $muon->id }}">Trả</button>
                                             <button type="button"
-                                                class="btn {{ $muon->ngaytra == date('Y-m-d') ? 'btn-outline-secondary' : 'btn-outline-danger' }} block"
+                                                class="btn {{ strtotime($muon->ngaytra) < strtotime(date('Y-m-d')) ? 'btn-outline-light' : 'btn-outline-danger' }} block"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#mat{{ $muon->id }}">Mất</button>
                                         </td>
@@ -165,30 +167,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-
-                        {{-- @push('ajax')
-                            <script>
-                                $.ajaxSetup({
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    },
-                                })
-
-                                var ma_uer = $('#ma_user').val()
-
-                                $('#btn-timsv').click(function(ev) {
-                                    ev.preventDefault();
-                                    $.ajax({
-                                        url: '{{ route('ajax.muonsach') }}',
-                                        type: 'POST',
-                                        data:{ma_uer},
-                                        success: function(){
-
-                                        }
-                                    })
-                                })
-                            </script>
-                        @endpush --}}
                     </div>
                 </div>
             </div>

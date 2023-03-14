@@ -24,7 +24,7 @@
                 @foreach ($saches as $sach)
                     <div class="card border-0">
                         <div class="card-body " style=" background-color: transparent !important;">
-                            <a href="#">
+                            <a href="{{ route('sach.chitiet', ['sach_id' => $sach->id]) }}">
                                 <img class="w-100" src="{{ asset('assets/images/books/' . $sach->anhbia) }}"
                                     alt="">
                             </a>

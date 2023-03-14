@@ -32,7 +32,7 @@ class SachClientController extends Controller
         $search = $request->key;
         $option_search = $request->select_search;
         if ($search != "") {
-            $saches = Sach::orderBy("id", "DESC")->search()->paginate(1);
+            $saches = Sach::orderBy("id", "DESC")->search()->paginate(10);
             $saches->appends(['select_search' => $option_search, 'key' => $search]);
         }
 
@@ -43,7 +43,7 @@ class SachClientController extends Controller
     {
         $nganh = Nganh::where('slug', $slugNganh)->get()->first();
         $danhmuc = Danhmuc::where('slug', $slugDanhmuc)->get()->first();
-        $saches = Sach::where('danhmuc', $danhmuc->tendm)->where('nganh', $nganh->tennganh)->paginate(1);
+        $saches = Sach::where('danhmuc', $danhmuc->tendm)->where('nganh', $nganh->tennganh)->paginate(10);
         return view('pages.client.sach', compact('saches'));
     }
 
